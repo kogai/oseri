@@ -1,4 +1,6 @@
-(ns oseri.core)
+(ns oseri.core
+  (:use
+   oseri.view))
 ; (ns oseri.core
 ;   (:use
 ;     oseri.view
@@ -30,10 +32,9 @@
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (let [
-    n (add 100)
-    s "World..."]
-    (println "Hello!!!" s n args)))
+  (let [n (add 100)
+        s "World..."]
+    (println "Hello!!!" s n (board 2))))
 
 ; (defn -main
 ;   [& args]
