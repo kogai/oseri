@@ -20,4 +20,4 @@
 
 (deftest test-show-line
   (testing "should be show first line"
-    (is (= (show-line (first (board 1))) "  "))))
+    (is (= (show-line '({:color :empty} {:color :black} {:color :white})) "   B W"))))

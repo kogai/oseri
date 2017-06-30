@@ -22,4 +22,5 @@
 
 (defn show-header [size] (show-header-impl size size))
 
-(defn show-line [line] "  ")
+(defn show-line [line] (if (= (count line) 0) ""
+  (join [" " (show-tile (first line)) (show-line (rest line))])))
