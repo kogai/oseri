@@ -18,4 +18,13 @@
                                (:W) west
                                (:NW) (comp north west)) pos)))
 
+(defn wrapped? [p b] (let [min 0
+                           max (count b)]
+                       (every? identity [(>= (get p :row) min)
+                                         (< (get p :col) max) (< (get p :row) max) (>= (get p :col) min)])))
+
+; 関数合成を使ってリファクタリングできそう
+(defn get-tile [p b] (let [row (get p :row) col (get p :col)]
+    (-> b (nth col) (nth row))))
+
 (defn correct-line [dir pos board] true)
