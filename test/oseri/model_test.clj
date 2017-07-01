@@ -21,18 +21,17 @@
     (let [b (board 2)]
       (is (= true (wrapped? {:row 1 :col 1} b)))
       (is (= false (wrapped? {:row 2 :col 2} b)))
-      (is (= false (wrapped? {:row -1 :col 0} b)))
-)))
+      (is (= false (wrapped? {:row -1 :col 0} b))))))
 
 (deftest test-get-tile
   (testing "should get tile"
-    (let [b (board 2)](is (= (get-tile {:row 1 :col 1} b) {:row 1 :col 1 :color :empty })))))
+    (let [b (board 2)] (is (= (get-tile b {:row 1 :col 1}) {:row 1 :col 1 :color :empty})))))
 
-; (deftest test-correct-line
-;   (testing "should correct line"
-;     (let [board '(({:color :empty :row 0 :col 0} {:color :black :row 0 :col 1} {:color :white :row 0 :col 2})
-;                   ({:color :empty :row 1 :col 0} {:color :black :row 1 :col 1} {:color :white :row 1 :col 2})
-;                   ({:color :empty :row 2 :col 0} {:color :black :row 2 :col 1} {:color :white :row 2 :col 2}))]
-;       (is (= (correct-line :N {:row 2 :col 1} board) '({:color :black :row 2 :col 1} {:color :black :row 1 :col 1} {:color :black :row 0 :col 1})))
-;       (is (= (correct-line :SW {:row 0 :col 2} board) '({:color :white :row 0 :col 2} {:color :black :row 1 :col 1} {:color :empty :row 2 :col 0})))
-;       (is (= (correct-line :E {:row 1 :col 0} board) '({:color :empty :row 1 :col 0} {:color :black :row 1 :col 1} {:color :white :row 1 :col 2}))))))
+(deftest test-correct-line
+  (testing "should correct line"
+    (let [b '(({:color :empty :row 0 :col 0} {:color :black :row 0 :col 1} {:color :white :row 0 :col 2})
+              ({:color :empty :row 1 :col 0} {:color :black :row 1 :col 1} {:color :white :row 1 :col 2})
+              ({:color :empty :row 2 :col 0} {:color :black :row 2 :col 1} {:color :white :row 2 :col 2}))]
+      (is (= (correct-line :N {:row 2 :col 1} b) '({:color :black :row 2 :col 1} {:color :black :row 1 :col 1} {:color :black :row 0 :col 1})))
+      (is (= (correct-line :SW {:row 0 :col 2} b) '({:color :white :row 0 :col 2} {:color :black :row 1 :col 1} {:color :empty :row 2 :col 0})))
+      (is (= (correct-line :E {:row 1 :col 0} b) '({:color :empty :row 1 :col 0} {:color :black :row 1 :col 1} {:color :white :row 1 :col 2}))))))

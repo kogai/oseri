@@ -23,8 +23,12 @@
                        (every? identity [(>= (get p :row) min)
                                          (< (get p :col) max) (< (get p :row) max) (>= (get p :col) min)])))
 
-; 関数合成を使ってリファクタリングできそう
-(defn get-tile [p b] (let [row (get p :row) col (get p :col)]
-    (-> b (nth col) (nth row))))
+(defn get-tile [b p] (let [row (get p :row) col (get p :col)]
+                       (-> b (nth row) (nth col))))
 
-(defn correct-line [dir pos board] true)
+(defn correct-line-cord [d p b] (if (not (wrapped? p b))
+                                  '()
+                                  (cons p (correct-line-cord d (successor d p) b))))
+
+(defn correct-line [d p b] (let [line (correct-line-cord d p b)]
+                             (map (partial get-tile b) line)))

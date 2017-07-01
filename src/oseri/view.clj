@@ -1,8 +1,6 @@
 (ns oseri.view
   (:require [clojure.string :refer [join]]))
 
-(def board-size 8)
-
 (defn board [size]
   (let [line (range size)]
     (map (fn [x] (map (fn [y] {:row x :col y :color :empty}) line)) line)))
