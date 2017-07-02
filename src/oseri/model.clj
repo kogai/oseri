@@ -1,4 +1,5 @@
-(ns oseri.model)
+(ns oseri.model
+  (:require [oseri.view :refer [direction]]))
 
 ; (MEMO: (row,col))
 ; (0,0)(0,1)(0,2)
@@ -40,3 +41,5 @@
                                     (and
                                      (not (= color (get head :color)))
                                      (clasp? color body)))))
+
+(defn movable? [b p color] true)
