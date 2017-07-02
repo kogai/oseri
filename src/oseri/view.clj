@@ -1,9 +1,11 @@
 (ns oseri.view
   (:require [clojure.string :refer [join]]))
 
+(defrecord Tile [row col color])
+
 (defn board [size]
   (let [line (range size)]
-    (map (fn [x] (map (fn [y] {:row x :col y :color :empty}) line)) line)))
+    (map (fn [x] (map (fn [y] (->Tile x y :empty)) line)) line)))
 
 (def direction #{:N :NE :E :SE :S :SW :W :NW})
 

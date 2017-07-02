@@ -25,7 +25,7 @@
 
 (deftest test-get-tile
   (testing "should get tile"
-    (let [b (board 2)] (is (= (get-tile b {:row 1 :col 1}) {:row 1 :col 1 :color :empty})))))
+    (let [b (board 2)] (is (= (get-tile b {:row 1 :col 1}) #oseri.view.Tile {:row 1 :col 1 :color :empty})))))
 
 (deftest test-correct-line
   (testing "should correct line"
