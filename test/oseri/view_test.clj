@@ -2,7 +2,7 @@
   (:use oseri.view)
   (:require [clojure.test :refer :all]
             [oseri.core :refer :all]))
-            
+
 (deftest board-test
   (testing "should be create board"
     (is (= (board 2) '((#oseri.view.Tile {:row 0 :col 0 :color :empty} #oseri.view.Tile {:row 0 :col 1 :color :empty}) (#oseri.view.Tile {:row 1, :col 0 :color :empty} #oseri.view.Tile {:row 1, :col 1 :color :empty}))))))

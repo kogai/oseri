@@ -1,9 +1,8 @@
 (ns oseri.model-test
-  (:use
-   oseri.model
-   oseri.view)
   (:require [clojure.test :refer :all]
-            [oseri.core :refer :all]))
+            [oseri.core :refer :all]
+            [oseri.view :refer :all]
+            [oseri.model :refer :all]))
 
 (deftest test-successor
   (testing "should derive successor"
@@ -35,3 +34,13 @@
       (is (= (correct-line :N {:row 2 :col 1} b) '({:color :black :row 2 :col 1} {:color :black :row 1 :col 1} {:color :black :row 0 :col 1})))
       (is (= (correct-line :SW {:row 0 :col 2} b) '({:color :white :row 0 :col 2} {:color :black :row 1 :col 1} {:color :empty :row 2 :col 0})))
       (is (= (correct-line :E {:row 1 :col 0} b) '({:color :empty :row 1 :col 0} {:color :black :row 1 :col 1} {:color :white :row 1 :col 2}))))))
+
+(deftest test-clasp?
+  (testing "should detect claspable line"
+    (let [line-1 [(->Tile 0 0 :white) (->Tile 0 1 :white) (->Tile 0 2 :white) (->Tile 0 3 :empty)]
+          line-2 [(->Tile 0 0 :black) (->Tile 0 1 :black) (->Tile 0 2 :black) (->Tile 0 3 :empty)]
+          line-3 [(->Tile 0 0 :black) (->Tile 0 1 :black) (->Tile 0 2 :white) (->Tile 0 3 :empty)]]
+      (is (= true (clasp? :black line-1)))
+      (is (= false (clasp? :black line-2)))
+      (is (= false (clasp? :black line-3)))
+)))

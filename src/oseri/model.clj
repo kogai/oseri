@@ -32,3 +32,11 @@
 
 (defn correct-line [d p b] (let [line (correct-line-cord d p b)]
                              (map (partial get-tile b) line)))
+
+(defn clasp? [color line] (cond
+                            (empty? line) true
+                            (= (get (first line) :color) :empty) true
+                            :else (let [head (first line) body (rest line)]
+                                    (and
+                                     (not (= color (get head :color)))
+                                     (clasp? color body)))))
