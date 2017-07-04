@@ -4,7 +4,6 @@
             [oseri.view :refer :all]
             [oseri.model :refer :all]))
 
-
 (defn from-char [row col c] (case c
                               (\B) (->Tile row col :black)
                               (\W) (->Tile row col :white)
@@ -42,11 +41,9 @@
 
 (deftest test-correct-line
   (testing "should correct line"
-    (let [b (create-board-from-str '(
-        " BW"
-        " BW"
-        " BW"
-      ))]
+    (let [b (create-board-from-str '(" BW"
+                                     " BW"
+                                     " BW"))]
       (is (= (correct-line :N {:row 2 :col 1} b) [(->Tile 2 1 :black) (->Tile 1 1 :black) (->Tile 0 1 :black)]))
       (is (= (correct-line :SW {:row 0 :col 2} b) [(->Tile 0 2 :white) (->Tile 1 1 :black) (->Tile 2 0 :empty)]))
       (is (= (correct-line :E {:row 1 :col 0} b) [(->Tile 1 0 :empty) (->Tile 1 1 :black) (->Tile 1 2 :white)])))))
@@ -62,8 +59,7 @@
       (is (= false (clasp? :black line-2)))
       (is (= false (clasp? :black line-3)))
       (is (= false (clasp? :black line-4)))
-      (is (= false (clasp? :white line-5)))
-      )))
+      (is (= false (clasp? :white line-5))))))
 
 (deftest test-movable?
   (testing "should detect movable point"
@@ -82,5 +78,16 @@
       (is (= true (movable? b1 {:row 1 :col 0} :white)))
       (is (= false (movable? b2 {:row 1 :col 0} :white)))
       (is (= true (movable? b3 {:row 2 :col 0} :white)))
-      (is (= true (movable? b4 {:row 1 :col 0} :white)))
-      )))
+      (is (= true (movable? b4 {:row 1 :col 0} :white))))))
+
+; "        "
+; "        "
+; "        "
+; "   BW   "
+; "   WB   "
+; "        "
+; "        "
+; "        "
+(deftest test-initial-operations
+  (testing "should create initial operations"
+    (is (= [(->Tile 3 3 :black) (->Tile 3 4 :white) (->Tile 4 3 :white) (->Tile 4 4 :black)] (initial-operations 8)))))

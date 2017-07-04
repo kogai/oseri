@@ -1,4 +1,5 @@
-(ns oseri.model)
+(ns oseri.model
+  (:require [oseri.view :refer [->Tile]]))
 
 (def direction #{:N :NE :E :SE :S :SW :W :NW})
 
@@ -22,8 +23,11 @@
 
 (defn wrapped? [p b] (let [min 0
                            max (count b)]
-                       (every? identity [(>= (:row p) min)
-                                         (< (:col p) max) (< (:row p) max) (>= (:col p) min)])))
+                       (and
+                        (>= (:row p) min)
+                        (< (:col p) max)
+                        (< (:row p) max)
+                        (>= (:col p) min))))
 
 (defn get-tile [b p] (let [row (:row p) col (:col p)]
                        (-> b (nth row) (nth col))))
@@ -32,39 +36,45 @@
                                   '()
                                   (cons p (correct-line-cord d (successor d p) b))))
 
-(defn correct-line [d p b] (let [line (correct-line-cord d p b)]
-                             (map (partial get-tile b) line)))
+(defn correct-line [d p b] (->> b
+                                (correct-line-cord d p)
+                                (map (partial get-tile b))))
 
 (defn -free? [tile] (= :empty (:color tile)))
 
 (defn correct-valid-tiles [line] (cond
-    (empty? line) '()
-    (-free? (first line)) '()
-    :else (let [head (first line) body (rest line)]
-            (cons head (correct-valid-tiles body))
-            )))
-
+                                   (empty? line) '()
+                                   (-free? (first line)) '()
+                                   :else (let [head (first line) body (rest line)]
+                                           (cons head (correct-valid-tiles body)))))
 
 (defn clasp-impl? [color line] (cond
-                            (empty? line) true
-                            (= (:color (first line)) :empty) true
-                            :else (let [head (first line) body (rest line)]
-                                    (and
-                                     (not (= color (:color head)))
-                                     (clasp-impl? color body)))))
+                                 (empty? line) true
+                                 (= (:color (first line)) :empty) true
+                                 :else (let [head (first line) body (rest line)]
+                                         (and
+                                          (not (= color (:color head)))
+                                          (clasp-impl? color body)))))
 
 (defn clasp? [color line] (let [line' (correct-valid-tiles line) tail (last line') body (drop-last line')]
-  (and
-    (not (empty? line'))
-    (= color (:color tail))
-    (clasp-impl? color body)
-  )))
+                            (and
+                             (not (empty? line'))
+                             (= color (:color tail))
+                             (clasp-impl? color body))))
 
 (defn movable? [b p color] (and
-  (-free? (get-tile b p))
-  (true? (some #(->> b
-                  (correct-line % p)
-                  rest
-                  (clasp? color))
-                direction))
-  ))
+                            (-free? (get-tile b p))
+                            (true? (some #(->> b
+                                               (correct-line % p)
+                                               rest
+                                               (clasp? color))
+                                         direction))))
+
+(defn initial-operations [size]
+  (let [base (dec (quot size 2))
+        south-east {:row base :col base}
+        operations (cons south-east (map #(successor % {:row base :col base}) '(:E :S :SE)))]
+    (map-indexed #(cond
+                    (or (= %1 0) (= %1 3)) (->Tile (:row %2) (:col %2) :black)
+                    :else (->Tile (:row %2) (:col %2) :white))
+                 operations)))

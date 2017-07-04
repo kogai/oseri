@@ -7,7 +7,6 @@
   (let [line (range size)]
     (map (fn [x] (map (fn [y] (->Tile x y :empty)) line)) line)))
 
-
 ; TODO: atomにしたい
 (def player (ref nil))
 
