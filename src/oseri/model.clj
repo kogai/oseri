@@ -62,13 +62,13 @@
                              (= color (:color tail))
                              (clasp-impl? color body))))
 
-(defn movable? [b p color] (and
-                            (-free? (get-tile b p))
-                            (true? (some #(->> b
-                                               (correct-line % p)
-                                               rest
-                                               (clasp? color))
-                                         direction))))
+(defn pointable? [b p color] (and
+                              (-free? (get-tile b p))
+                              (true? (some #(->> b
+                                                 (correct-line % p)
+                                                 rest
+                                                 (clasp? color))
+                                           direction))))
 
 (defn initial-operations [size]
   (let [base (dec (quot size 2))
@@ -78,3 +78,8 @@
                     (or (= %1 0) (= %1 3)) (->Tile (:row %2) (:col %2) :black)
                     :else (->Tile (:row %2) (:col %2) :white))
                  operations)))
+
+(defn operate [brd oprt]
+  (if (pointable? brd oprt (:color oprt))
+    ""
+    "Can't point here"))

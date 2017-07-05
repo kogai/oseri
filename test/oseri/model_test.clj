@@ -14,7 +14,7 @@
                              (let [head (first s) body (rest s)]
                                (cons (from-char row col head) (from-str row (+ col 1) body)))))
 
-(defn create-board-from-str [board-str-list]
+(defn create-board-from-str "文字列のリストからある状態の盤面を作るヘルパー関数" [board-str-list]
   (map-indexed (fn [row line] (from-str row 0 line)) board-str-list))
 
 (deftest test-successor
@@ -61,7 +61,7 @@
       (is (= false (clasp? :black line-4)))
       (is (= false (clasp? :white line-5))))))
 
-(deftest test-movable?
+(deftest test-pointable?
   (testing "should detect movable point"
     (let [b1 (create-board-from-str '("   "
                                       " BW"
@@ -75,10 +75,10 @@
           b4 (create-board-from-str '("  W"
                                       " B "
                                       " WB"))]
-      (is (= true (movable? b1 {:row 1 :col 0} :white)))
-      (is (= false (movable? b2 {:row 1 :col 0} :white)))
-      (is (= true (movable? b3 {:row 2 :col 0} :white)))
-      (is (= true (movable? b4 {:row 1 :col 0} :white))))))
+      (is (= true (pointable? b1 {:row 1 :col 0} :white)))
+      (is (= false (pointable? b2 {:row 1 :col 0} :white)))
+      (is (= true (pointable? b3 {:row 2 :col 0} :white)))
+      (is (= true (pointable? b4 {:row 1 :col 0} :white))))))
 
 ; "        "
 ; "        "
@@ -91,3 +91,19 @@
 (deftest test-initial-operations
   (testing "should create initial operations"
     (is (= [(->Tile 3 3 :black) (->Tile 3 4 :white) (->Tile 4 3 :white) (->Tile 4 4 :black)] (initial-operations 8)))))
+
+(deftest test-operate
+  (testing "should return new state of board"
+    (let [actual (create-board-from-str '("   "
+                                          " WB"
+                                          "   "))
+          expect (create-board-from-str '("   "
+                                          "WWW"
+                                          "   "))]
+      (is (= expect (operate actual (->Tile 1 0 :black))))))
+  (testing "should return error when not pointable"
+    (let [actual (create-board-from-str '("   "
+                                          " BW"
+                                          "   "))
+          expect "Can't point here"]
+      (is (= expect (operate actual (->Tile 1 0 :black)))))))
