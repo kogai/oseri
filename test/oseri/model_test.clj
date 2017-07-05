@@ -10,12 +10,12 @@
                               (->Tile row col :empty)))
 
 (defn from-str [row col s] (if (empty? s)
-                             '()
+                             []
                              (let [head (first s) body (rest s)]
                                (cons (from-char row col head) (from-str row (+ col 1) body)))))
 
 (defn create-board-from-str "文字列のリストからある状態の盤面を作るヘルパー関数" [board-str-list]
-  (map-indexed (fn [row line] (from-str row 0 line)) board-str-list))
+  (vec (map-indexed (fn [row line] (vec (from-str row 0 line))) board-str-list)))
 
 (deftest test-successor
   (testing "should derive successor"
@@ -94,9 +94,10 @@
 
 (deftest test-operate
   (testing "should return new state of board"
-    (let [actual (create-board-from-str '("   "
+    (let [base (create-board-from-str '("   "
                                           " WB"
                                           "   "))
+          actual (operate base (->Tile 1 0 :black))
           expect (create-board-from-str '("   "
                                           "WWW"
                                           "   "))]
