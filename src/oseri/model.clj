@@ -79,19 +79,29 @@
                     :else (->Tile (:row %2) (:col %2) :white))
                  operations)))
 
+(defn convert [brd oprt]
+  (let [line (nth brd (:row oprt))]
+                (assoc brd (:row oprt)
+                       (assoc line (:col oprt) oprt))))
+
+(defn consume-operate [brd oprts color]
+  (reduce
+    #(convert %1 (assoc %2 :color color))
+    brd oprts))
+
 (defn operate [brd oprt]
   (if (pointable? brd oprt (:color oprt))
-    (letfn [(convert [b o]
-              (let [line (nth b (:row o))]
-                (assoc b (:row o)
-                       (assoc line (:col o) o))))
-            (correct-convertable [b o]
+    (letfn [(correct-convertable [b o]
                                  (->> direction
                                       (map #(->> b
                                                  (correct-line % o)
                                                  rest
                                                  correct-valid-tiles))
                                       (filter #(clasp? (:color o) %))))]
-      (reduce (fn [acc o]
-                (convert acc (assoc o :color (:color oprt)))) brd (cons oprt (flatten (correct-convertable brd oprt)))))
+      (consume-operate
+        brd
+        (cons oprt (->> oprt
+                        (correct-convertable brd)
+                        flatten))
+        (:color oprt)))
     "Can't point here"))
