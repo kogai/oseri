@@ -1,7 +1,8 @@
 (ns oseri.view-test
   (:use oseri.view)
   (:require [clojure.test :refer :all]
-            [oseri.core :refer :all]))
+            [oseri.core :refer :all]
+            [clojure.string :refer [split]]))
 
 (deftest test-board
   (testing "should be create board"
@@ -17,13 +18,20 @@
 
 (deftest test-show-header
   (testing "should be show header"
-    (is (= (show-header 3) " 0 1 2"))))
+    (is (= (show-header 3) "  0 1 2"))))
 
 (deftest test-show-line
   (testing "should be show line"
     (is (= (show-line '({:color :empty :row 0} {:color :black :row 0} {:color :white :row 0})) "0   B W"))))
 
+; -  0 1 2
+; -0 W B W
+; -1 B   B
+; -2 W B W
 (deftest test-show-board
   (testing "should be show board"
-    (is (= (show-board '(({:color :empty :row 0} {:color :black} {:color :white})
-                         ({:color :empty :row 1} {:color :black} {:color :white}))) " 0 1 2\n0   B W\n1   B W"))))
+    (let [actual (show-board '(({:color :white :row 0} {:color :black} {:color :white})
+                               ({:color :black :row 1} {:color :empty} {:color :black})
+                               ({:color :white :row 2} {:color :black} {:color :white})))
+          expect "  0 1 2\n0 W B W\n1 B   B\n2 W B W"]
+      (is (= expect actual)))))

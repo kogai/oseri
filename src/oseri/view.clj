@@ -18,7 +18,7 @@
 (defn show-header-impl [size max] (if (= size 0) ""
                                       (str " " (- max size) (show-header-impl (dec size) max))))
 
-(defn show-header [size] (show-header-impl size size))
+(defn show-header [size] (str " " (show-header-impl size size)))
 
 (defn show-line-impl [line] (if (= (count line) 0) ""
                                 (str " " (show-tile (first line)) (show-line-impl (rest line)))))
@@ -28,7 +28,6 @@
 (defn show-board-impl [board] (if (= (count board) 0) []
                                   (cons (show-line (first board)) (show-board-impl (rest board)))))
 
-; FIXME: 一枡横にズレてる
 (defn show-board [board]
   (let [col-size (count (first board)) header (show-header col-size)]
     (join "\n" (cons header (show-board-impl board)))))
