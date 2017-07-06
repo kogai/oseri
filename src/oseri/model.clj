@@ -61,7 +61,7 @@
                              (not (empty? line'))
                              (= color (:color tail))
                              (clasp-impl? color body))))
-                             
+
 (defn pointable? [b p color] (and
                               (-free? (get-tile b p))
                               (true? (some #(->> b
@@ -81,11 +81,17 @@
 
 (defn operate [brd oprt]
   (if (pointable? brd oprt (:color oprt))
-    (letfn [
-        (convert [b o]
-          (let [line (nth b (:row o))]
-            (assoc b (:row o)
-              (assoc line (:col o) o))))
-        (correct [n] n)
-      ] (convert brd oprt))
+    (letfn [(convert [b o]
+              (let [line (nth b (:row o))]
+                (assoc b (:row o)
+                       (assoc line (:col o) o))))
+            (correct-convertable [b o]
+                                 (->> direction
+                                      (map #(->> b
+                                                 (correct-line % o)
+                                                 rest
+                                                 correct-valid-tiles))
+                                      (filter #(clasp? (:color o) %))))]
+      (reduce (fn [acc o]
+                (convert acc (assoc o :color (:color oprt)))) brd (cons oprt (flatten (correct-convertable brd oprt)))))
     "Can't point here"))

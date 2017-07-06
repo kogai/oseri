@@ -95,13 +95,46 @@
 (deftest test-operate
   (testing "should return new state of board"
     (let [base (create-board-from-str '("   "
-                                          " WB"
-                                          "   "))
+                                        " WB"
+                                        "   "))
           actual (operate base (->Tile 1 0 :black))
           expect (create-board-from-str '("   "
-                                          "WWW"
+                                          "BBB"
                                           "   "))]
-      (is (= expect (operate actual (->Tile 1 0 :black))))))
+      (is (= expect actual))))
+  (testing "should return new state of board(2)"
+    (let [base (create-board-from-str '("  W"
+                                        " B "
+                                        "   "))
+          actual (operate base (->Tile 2 0 :white))
+          expect (create-board-from-str '("  W"
+                                          " W "
+                                          "W  "))]
+      (is (= expect actual))))
+  (testing "should return new state of board(3)"
+    (let [base (create-board-from-str '("    "
+                                        " W  "
+                                        " B  "
+                                        "    "))
+          actual (operate base (->Tile 3 1 :white))
+          expect (create-board-from-str '("    "
+                                          " W  "
+                                          " W  "
+                                          " W  "))]
+      (is (= expect actual))))
+  (testing "should return new state of board(4)"
+    (let [base (create-board-from-str '("     "
+                                        "   W "
+                                        "   B "
+                                        " WB  "
+                                        "     "))
+          actual (operate base (->Tile 3 3 :white))
+          expect (create-board-from-str '("     "
+                                          "   W "
+                                          "   W "
+                                          " WWW "
+                                          "     "))]
+      (is (= expect actual))))
   (testing "should return error when not pointable"
     (let [actual (create-board-from-str '("   "
                                           " BW"

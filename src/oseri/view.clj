@@ -28,6 +28,7 @@
 (defn show-board-impl [board] (if (= (count board) 0) []
                                   (cons (show-line (first board)) (show-board-impl (rest board)))))
 
+; FIXME: 一枡横にズレてる
 (defn show-board [board]
   (let [col-size (count (first board)) header (show-header col-size)]
     (join "\n" (cons header (show-board-impl board)))))
