@@ -1,10 +1,8 @@
 (ns oseri.core
-  (:use
-   oseri.view))
-; (ns oseri.core
-;   (:use
-;     oseri.view
-;     oseri.model))
+  (:require
+    [oseri.view :refer [show-board board]]
+    [oseri.model :refer [initial-operations convert]]
+    ))
 
 ; (defn on-command
 ;   [cmdline]
@@ -24,6 +22,13 @@
 ;   (init-game on-state-changed)
 ;   (start-ui))
 ; (ns oser.core)
+
+; TODO: atomにしたい
+(def player (ref nil))
+
+(defn initial-board [n]
+  (let [brd (board n) oprts (initial-operations n)]
+      (reduce convert brd oprts)))
 
 (defn -main
   [& args]

@@ -7,9 +7,6 @@
   (let [line (range size)]
     (vec (map (fn [x] (vec (map (fn [y] (->Tile x y :empty)) line))) line))))
 
-; TODO: atomにしたい
-(def player (ref nil))
-
 (defn show-tile [x] (case (:color x)
                       :black "B"
                       :white "W"
