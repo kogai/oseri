@@ -74,11 +74,15 @@
                                       " WB"))
           b4 (create-board-from-str '("  W"
                                       " B "
-                                      " WB"))]
+                                      " WB"))
+          b5 (create-board-from-str '("   "
+                                      " B "
+                                      "   "))]
       (is (= true (pointable? b1 {:row 1 :col 0} :white)))
       (is (= false (pointable? b2 {:row 1 :col 0} :white)))
       (is (= true (pointable? b3 {:row 2 :col 0} :white)))
-      (is (= true (pointable? b4 {:row 1 :col 0} :white))))))
+      (is (= true (pointable? b4 {:row 1 :col 0} :white)))
+      (is (= false (pointable? b5 {:row 1 :col 0} :black))))))
 
 ; "        "
 ; "        "
@@ -102,7 +106,7 @@
                                           "BBB"
                                           "   "))]
       (is (= expect actual))))
-  (testing "should return new state of board(2)"
+  (testing "should return new state of board with oblique"
     (let [base (create-board-from-str '("  W"
                                         " B "
                                         "   "))
@@ -111,7 +115,7 @@
                                           " W "
                                           "W  "))]
       (is (= expect actual))))
-  (testing "should return new state of board(3)"
+  (testing "should return new state of board that line includes empty tile"
     (let [base (create-board-from-str '("    "
                                         " W  "
                                         " B  "
@@ -122,7 +126,7 @@
                                           " W  "
                                           " W  "))]
       (is (= expect actual))))
-  (testing "should return new state of board(4)"
+  (testing "should return new state of board that include multiple convertable lines"
     (let [base (create-board-from-str '("     "
                                         "   W "
                                         "   B "

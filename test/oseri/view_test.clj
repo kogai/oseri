@@ -2,11 +2,21 @@
   (:use oseri.view)
   (:require [clojure.test :refer :all]
             [oseri.core :refer :all]
+            [oseri.model-test :refer [create-board-from-str]]
             [clojure.string :refer [split]]))
 
 (deftest test-board
   (testing "should be create board"
     (is (= (board 2) '((#oseri.view.Tile {:row 0 :col 0 :color :empty} #oseri.view.Tile {:row 0 :col 1 :color :empty}) (#oseri.view.Tile {:row 1, :col 0 :color :empty} #oseri.view.Tile {:row 1, :col 1 :color :empty}))))))
+
+(deftest test-map-board
+  (testing "should map board"
+    (let [actual (map-board #(assoc %1 :color :black)
+                            (create-board-from-str '("  "
+                                                     "  ")))
+          expect (create-board-from-str '("BB"
+                                          "BB"))]
+      (is (= expect actual)))))
 
 (deftest test-show-tile
   (testing "should be show black tile"

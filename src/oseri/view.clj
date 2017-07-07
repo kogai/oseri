@@ -7,6 +7,9 @@
   (let [line (range size)]
     (vec (map (fn [x] (vec (map (fn [y] (->Tile x y :empty)) line))) line))))
 
+(defn map-board [f brd]
+  (map #(map f %) brd))
+
 (defn show-tile [x] (case (:color x)
                       :black "B"
                       :white "W"

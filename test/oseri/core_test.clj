@@ -29,4 +29,12 @@
                                           "        "
                                           "        "))]
       (is (= expect (first actual)))
-      (is (= :black (second actual))))))
+      (is (= :white (second actual))))))
+
+; (deftest test-playable?
+;   (testing "should be able to determine that the board is playeable")
+;     (let [actual (playable? (create-board-from-str '("   "
+;                                                      " B "
+;                                                      "   ")) :black)
+;           expect false]
+;       (is (= expect actual))))

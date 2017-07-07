@@ -1,7 +1,7 @@
 (ns oseri.core
   (:require
-   [oseri.view :refer [show-board board]]
-   [oseri.model :refer [initial-operations convert operate]]))
+   [oseri.view :refer [show-board board map-board]]
+   [oseri.model :refer [initial-operations convert operate pointable?]]))
 
 ; (defn on-command
 ;   [cmdline]
@@ -28,14 +28,21 @@
 
 (defn create-game [n]
   (let [brd (ref (initial-board n))
-        plyr (ref :white)
-        rvs #(case %
+        plyr (ref nil)
+        rvs #(case %2
                :black :white
                :white :black)]
     (fn [tile]
-    ; 次のゲーム世界の状態のタプル
+      ; 次のゲーム世界の状態のタプル
+      ; FIXME: 置けなかった時も手番が変わる
       [(dosync (alter brd operate tile)),
-       (dosync (alter plyr rvs))])))
+       (dosync (alter plyr rvs (:color tile)))])))
+
+(defn playable? [brd plyr]
+  (->> brd
+       (map-board #(pointable? brd % plyr))
+       flatten
+       (some identity)))
 
 (defn -main
   [& args]
