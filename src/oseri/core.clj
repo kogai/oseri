@@ -42,7 +42,8 @@
   (->> brd
        (map-board #(pointable? brd % plyr))
        flatten
-       (some identity)))
+       (some identity)
+       true?))
 
 (defn -main
   [& args]

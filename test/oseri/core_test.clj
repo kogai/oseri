@@ -31,10 +31,20 @@
       (is (= expect (first actual)))
       (is (= :white (second actual))))))
 
-; (deftest test-playable?
-;   (testing "should be able to determine that the board is playeable")
-;     (let [actual (playable? (create-board-from-str '("   "
-;                                                      " B "
-;                                                      "   ")) :black)
-;           expect false]
-;       (is (= expect actual))))
+(deftest test-playable?
+  (testing "should be able to determine that the board is playeable"
+    (let [actual (playable? (create-board-from-str '("   "
+                                                     " B "
+                                                     "   ")) :black)
+          expect false]
+      (is (= expect actual)))
+    (let [actual (playable? (create-board-from-str '("BWB"
+                                                     "WBW"
+                                                     "BWB")) :black)
+          expect false]
+      (is (= expect actual)))
+    (let [actual (playable? (create-board-from-str '(" WB"
+                                                     "WBW"
+                                                     "BWB")) :black)
+          expect true]
+      (is (= expect actual)))))
