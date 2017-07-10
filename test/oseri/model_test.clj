@@ -54,12 +54,14 @@
           line-2 [(->Tile 0 0 :black) (->Tile 0 1 :black)]
           line-3 [(->Tile 0 0 :black) (->Tile 0 1 :white)]
           line-4 [(->Tile 0 0 :empty) (->Tile 0 1 :black)]
-          line-5 [(->Tile 0 0 :white) (->Tile 0 1 :black)]]
+          line-5 [(->Tile 0 0 :white) (->Tile 0 1 :black)]
+          line-6 [(->Tile 0 0 :black) (->Tile 0 1 :empty)]]
       (is (= true (clasp? :black line-1)))
       (is (= false (clasp? :black line-2)))
       (is (= false (clasp? :black line-3)))
       (is (= false (clasp? :black line-4)))
-      (is (= false (clasp? :white line-5))))))
+      (is (= false (clasp? :white line-5)))
+      (is (= false (clasp? :black line-6))))))
 
 (deftest test-pointable?
   (testing "should detect movable point"
@@ -81,7 +83,7 @@
       (is (= true (pointable? b1 {:row 1 :col 0} :white)))
       (is (= false (pointable? b2 {:row 1 :col 0} :white)))
       (is (= true (pointable? b3 {:row 2 :col 0} :white)))
-      (is (= true (pointable? b4 {:row 1 :col 0} :white)))
+      (is (= false (pointable? b4 {:row 1 :col 0} :white)))
       (is (= false (pointable? b5 {:row 1 :col 0} :black))))))
 
 ; "        "

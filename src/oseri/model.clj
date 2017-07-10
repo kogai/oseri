@@ -58,7 +58,7 @@
 
 (defn clasp? [color line] (let [line' (correct-valid-tiles line) tail (last line') body (drop-last line')]
                             (and
-                             (not (empty? line'))
+                             (not (empty? body))
                              (= color (:color tail))
                              (clasp-impl? color body))))
 
