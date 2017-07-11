@@ -45,6 +45,16 @@
        (some identity)
        true?))
 
+(defn read-cmd []
+  (loop [pos (read-line)]
+    (when (not (empty? pos))
+      (println "Input ->" pos)
+      (recur (read-cmd)))))
+
+(defn start-game []
+  (.start (Thread. read-cmd)))
+
 (defn -main
   [& args]
-  (println (show-board (board 8))))
+  (println (show-board (board 8)))
+  (start-game))
