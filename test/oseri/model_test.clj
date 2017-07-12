@@ -147,3 +147,11 @@
                                           "   "))
           expect "Can't point here"]
       (is (= expect (operate actual (->Tile 1 0 :black)))))))
+
+(deftest test-score
+  (testing "should count score"
+    (let [actual (score (create-board-from-str '(" B "
+                                                 "WWW"
+                                                 " B ")) :black)
+          expect 2]
+      (is (= expect actual)))))
