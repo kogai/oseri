@@ -150,8 +150,28 @@
 
 (deftest test-score
   (testing "should count score"
-    (let [actual (score (create-board-from-str '(" B "
-                                                 "WWW"
-                                                 " B ")) :black)
-          expect 2]
+    (let [b (create-board-from-str '(" B "
+                                     "WWW"
+                                     " B "))
+          actual1 (score b :black)
+          actual2 (score b :white)]
+      (is (= 2 actual1))
+      (is (= 3 actual2)))))
+
+(deftest test-playable?
+  (testing "should be able to determine that the board is playeable"
+    (let [actual (playable? (create-board-from-str '("   "
+                                                     " B "
+                                                     "   ")) :black)
+          expect false]
+      (is (= expect actual)))
+    (let [actual (playable? (create-board-from-str '("BWB"
+                                                     "WBW"
+                                                     "BWB")) :black)
+          expect false]
+      (is (= expect actual)))
+    (let [actual (playable? (create-board-from-str '(" WB"
+                                                     "WBW"
+                                                     "BWB")) :black)
+          expect true]
       (is (= expect actual)))))

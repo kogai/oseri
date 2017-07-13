@@ -1,5 +1,5 @@
 (ns oseri.model
-  (:require [oseri.view :refer [->Tile]]))
+  (:require [oseri.view :refer [->Tile reduce-board map-board]]))
 
 (def direction #{:N :NE :E :SE :S :SW :W :NW})
 
@@ -104,3 +104,15 @@
                    oprt))
        (:color oprt)))
     "Can't point here"))
+
+(defn score [brd plyr]
+   (reduce-board
+    #(if (= plyr (:color %2)) (inc %1) %1)
+    0 brd))
+
+(defn playable? [brd plyr]
+  (->> brd
+       (map-board #(pointable? brd % plyr))
+       flatten
+       (some identity)
+       true?))

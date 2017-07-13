@@ -10,6 +10,9 @@
 (defn map-board [f brd]
   (map #(map f %) brd))
 
+(defn reduce-board [f val brd]
+  (reduce #(reduce f %1 %2) val brd))
+
 (defn show-tile [x] (case (:color x)
                       :black "B"
                       :white "W"

@@ -1,6 +1,6 @@
 (ns oseri.core
   (:require
-   [oseri.view :refer [show-board board map-board]]
+   [oseri.view :refer [show-board board]]
    [oseri.model :refer [initial-operations convert operate pointable?]]))
 
 ; (defn on-command
@@ -37,13 +37,6 @@
       ; FIXME: 置けなかった時も手番が変わる
       [(dosync (alter brd operate tile)),
        (dosync (alter plyr rvs (:color tile)))])))
-
-(defn playable? [brd plyr]
-  (->> brd
-       (map-board #(pointable? brd % plyr))
-       flatten
-       (some identity)
-       true?))
 
 (defn read-cmd []
   (loop [pos (read-line)]
